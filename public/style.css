@@ -31,9 +31,15 @@ body {
   width: 100px;
 }
 
-.options {
+.discard {
   display: flex;
   flex-direction: column;
+  padding: 0px 5px;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
 }
 
 .option {

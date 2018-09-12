@@ -76,7 +76,13 @@ export default class Hand extends React.Component {
     return (
       <div>
         {yourHand ? (
-          <h3>Your Hand {isPlaying && <h5>(it's your turn!)</h5>}</h3>
+          <div>
+            {isPlaying ? (
+              <h3>Your Hand (it's your turn)</h3>
+            ) : (
+              <h3>Your Hand</h3>
+            )}
+          </div>
         ) : (
           <h3>{player}'s Hand</h3>
         )}

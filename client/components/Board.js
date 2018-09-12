@@ -123,15 +123,11 @@ export default class Board extends React.Component {
               ) : (
                 <div className="option">Hint: none</div>
               )}
-              <div className="option">
-                Discard:{' '}
-                {G.discard.length ? (
-                  G.discard.map(card => <div key={card}>{' ' + card},</div>)
-                ) : (
-                  <div> none</div>
-                )}
-              </div>
+            </div>
+            <div className="options">
               <div className="option">Cards in deck: {G.deck.length}</div>
+
+              <div className="option">Discard: {displayDiscard(G.discard)}</div>
             </div>
           </div>
         ) : (
@@ -145,4 +141,30 @@ export default class Board extends React.Component {
       </div>
     )
   }
+}
+
+function displayDiscard(discardArr) {
+  if (!discardArr.length) {
+    return 'None'
+  }
+  let discardObj = {R: [], B: [], G: [], Y: [], W: []}
+  for (let card of discardArr) {
+    let number = card[0]
+    let color = card[1]
+    discardObj[color].push(number)
+  }
+  let dispArr = []
+  for (let color of Object.keys(discardObj)) {
+    discardObj[color].sort((a, b) => a - b)
+    let numStr = discardObj[color].join(', ')
+    dispArr.push([color, numStr])
+  }
+  return (
+    <div className="discard">
+      {dispArr.map(el => {
+        let [color, numStr] = [el[0], el[1]]
+        return <div key={color}>{color + ' - ' + numStr}</div>
+      })}
+    </div>
+  )
 }
