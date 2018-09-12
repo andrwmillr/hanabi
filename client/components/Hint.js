@@ -1,11 +1,6 @@
 import React from 'react'
 import {hintToText} from '../setup'
 
-// player passed down as prop
-// display hints
-
-// const hand = [[1, 'R'], [2, 'B'], [2, 'W'], [3, 'R'], [4, 'Y']];
-
 export default class Hint extends React.Component {
   constructor() {
     super()

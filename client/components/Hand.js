@@ -1,14 +1,11 @@
 import React from 'react'
 import Card from './Card'
 import Hint from './Hint'
-import socket from '../socket'
-import {runAI} from '../ai'
 
-export default class Move extends React.Component {
+export default class Hand extends React.Component {
   constructor() {
     super()
     this.state = {selected: null}
-    this.socket = socket
     this.play = this.play.bind(this)
     this.discard = this.discard.bind(this)
     this.giveHint = this.giveHint.bind(this)
@@ -24,7 +21,7 @@ export default class Move extends React.Component {
     if (domSelected.length) {
       domSelected[0].classList.remove('selected')
     }
-    this.endTurn(newG)
+    this.props.endTurn(newG)
   }
 
   discard(evt) {
@@ -36,7 +33,7 @@ export default class Move extends React.Component {
     if (domSelected.length) {
       domSelected[0].classList.remove('selected')
     }
-    this.endTurn(newG)
+    this.props.endTurn(newG)
   }
 
   giveHint(evt, hint) {
@@ -55,25 +52,12 @@ export default class Move extends React.Component {
       if (domSelected.length) {
         domSelected[0].classList.remove('selected')
       }
-      this.endTurn(newG)
+      this.props.endTurn(newG)
     }
   }
 
-  endTurn(game) {
-    if (this.props.AI) {
-      let turns = 0
-      while (turns < 3) {
-        const newG = runAI(game, turns)
-        this.props.AIPlay(newG, turns)
-        turns++
-      }
-    } else {
-      this.socket.emit('turn', game)
-    }
-  }
-
-  selectCard(card) {
-    const domCard = document.getElementById([this.props.player, card])
+  selectCard(card, index) {
+    const domCard = document.getElementById([this.props.player, card, index])
     const domSelected = document.getElementsByClassName('selected')
     if (domSelected.length) {
       domSelected[0].classList.remove('selected')
@@ -81,12 +65,14 @@ export default class Move extends React.Component {
     domCard.classList.add('selected')
     this.setState({selected: card})
   }
+
   render() {
     const player = this.props.player
+    const hand = this.props.hand
     const client = this.props.client
     const yourHand = player === client
     const isPlaying = this.props.playing === client
-    console.log('rendering hand:', this.props.hand)
+    const keysForCards = makeKeys(hand, player)
     return (
       <div>
         {yourHand ? (
@@ -96,17 +82,28 @@ export default class Move extends React.Component {
         )}
         <div className="hand">
           {yourHand
-            ? this.props.hand.map(card => {
+            ? hand.map((card, index) => {
+                const key = keysForCards[index]
                 return (
-                  <div key={card} onClick={() => this.selectCard(card)}>
-                    <Card show={false} card={card} player={player} />
+                  <div key={key} onClick={() => this.selectCard(card, index)}>
+                    <Card
+                      index={index}
+                      show={false}
+                      card={card}
+                      player={player}
+                    />
                   </div>
                 )
               })
-            : this.props.hand.map(card => {
+            : hand.map((card, index) => {
                 return (
-                  <div key={card}>
-                    <Card show={true} card={card} player={player} />
+                  <div key={keysForCards[index]}>
+                    <Card
+                      index={index}
+                      show={true}
+                      card={card}
+                      player={player}
+                    />
                   </div>
                 )
               })}
@@ -117,20 +114,20 @@ export default class Move extends React.Component {
             {yourHand ? (
               <div className="options">
                 <div className="option">
-                  <button onClick={this.play}>Play</button>
+                  <button type="button" onClick={this.play}>
+                    Play
+                  </button>
                 </div>
                 <div className="option">
-                  <button onClick={this.discard}>Discard</button>
+                  <button type="button" onClick={this.discard}>
+                    Discard
+                  </button>
                 </div>
               </div>
             ) : (
               <div className="options">
                 <div className="option">
-                  <Hint
-                    player={player}
-                    hand={this.props.hand}
-                    giveHint={this.giveHint}
-                  />
+                  <Hint player={player} hand={hand} giveHint={this.giveHint} />
                 </div>
               </div>
             )}
@@ -139,4 +136,20 @@ export default class Move extends React.Component {
       </div>
     )
   }
+}
+
+function makeKeys(hand, player) {
+  const checkerObj = {}
+  const keys = []
+  for (let card of hand) {
+    let existing = checkerObj[card]
+    if (existing) {
+      keys.push(player + card + existing)
+      checkerObj[card]++
+    } else {
+      keys.push(player + card)
+      checkerObj[card] = 1
+    }
+  }
+  return keys
 }

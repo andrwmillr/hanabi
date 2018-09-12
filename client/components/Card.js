@@ -20,7 +20,11 @@ const Card = props => {
   }
 
   return (
-    <div id={[props.player, props.card]} className="card" style={style}>
+    <div
+      id={[props.player, props.card, props.index]}
+      className="card"
+      style={style}
+    >
       <div value={props.card[0]} className="number">
         {number}
       </div>
