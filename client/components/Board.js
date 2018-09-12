@@ -10,14 +10,11 @@ export default class Board extends React.Component {
     this.state = {
       players: [],
       game: {},
-      playing: '',
-      AI: false
-      // clientName: ''
+      playing: ''
     }
     this.socket = socket
     this.startGame = this.startGame.bind(this)
-    // this.startGameWithAI = this.startGameWithAI.bind(this)
-    // this.AIPlay = this.AIPlay.bind(this)
+    this.endTurn = this.endTurn.bind(this)
   }
 
   componentDidMount() {

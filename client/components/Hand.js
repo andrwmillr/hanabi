@@ -56,8 +56,8 @@ export default class Hand extends React.Component {
     }
   }
 
-  selectCard(card) {
-    const domCard = document.getElementById([this.props.player, card])
+  selectCard(card, index) {
+    const domCard = document.getElementById([this.props.player, card, index])
     const domSelected = document.getElementsByClassName('selected')
     if (domSelected.length) {
       domSelected[0].classList.remove('selected')
@@ -68,10 +68,11 @@ export default class Hand extends React.Component {
 
   render() {
     const player = this.props.player
+    const hand = this.props.hand
     const client = this.props.client
     const yourHand = player === client
     const isPlaying = this.props.playing === client
-    const keysForCards = makeKeys(this.props.hand)
+    const keysForCards = makeKeys(hand, player)
     return (
       <div>
         {yourHand ? (
@@ -81,18 +82,28 @@ export default class Hand extends React.Component {
         )}
         <div className="hand">
           {yourHand
-            ? this.props.hand.map((card, index) => {
+            ? hand.map((card, index) => {
                 const key = keysForCards[index]
                 return (
-                  <div key={key} onClick={() => this.selectCard(card)}>
-                    <Card key={key} show={false} card={card} player={player} />
+                  <div key={key} onClick={() => this.selectCard(card, index)}>
+                    <Card
+                      index={index}
+                      show={false}
+                      card={card}
+                      player={player}
+                    />
                   </div>
                 )
               })
-            : this.props.hand.map((card, index) => {
+            : hand.map((card, index) => {
                 return (
                   <div key={keysForCards[index]}>
-                    <Card show={true} card={card} player={player} />
+                    <Card
+                      index={index}
+                      show={true}
+                      card={card}
+                      player={player}
+                    />
                   </div>
                 )
               })}
@@ -116,11 +127,7 @@ export default class Hand extends React.Component {
             ) : (
               <div className="options">
                 <div className="option">
-                  <Hint
-                    player={player}
-                    hand={this.props.hand}
-                    giveHint={this.giveHint}
-                  />
+                  <Hint player={player} hand={hand} giveHint={this.giveHint} />
                 </div>
               </div>
             )}
@@ -131,16 +138,16 @@ export default class Hand extends React.Component {
   }
 }
 
-function makeKeys(hand) {
+function makeKeys(hand, player) {
   const checkerObj = {}
   const keys = []
   for (let card of hand) {
     let existing = checkerObj[card]
     if (existing) {
-      keys.push(card + existing)
+      keys.push(player + card + existing)
       checkerObj[card]++
     } else {
-      keys.push(card)
+      keys.push(player + card)
       checkerObj[card] = 1
     }
   }
