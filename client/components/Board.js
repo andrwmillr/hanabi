@@ -1,5 +1,5 @@
 import React from 'react'
-import Move from './Move'
+import Hand from './Hand'
 import Score from './Score'
 import {setup, moves, calcPoints} from '../functions'
 import socket from '../socket'
@@ -16,8 +16,8 @@ export default class Board extends React.Component {
     }
     this.socket = socket
     this.startGame = this.startGame.bind(this)
-    this.startGameWithAI = this.startGameWithAI.bind(this)
-    this.AIPlay = this.AIPlay.bind(this)
+    // this.startGameWithAI = this.startGameWithAI.bind(this)
+    // this.AIPlay = this.AIPlay.bind(this)
   }
 
   componentDidMount() {
@@ -63,34 +63,38 @@ export default class Board extends React.Component {
     this.socket.emit('start', game)
   }
 
-  startGameWithAI() {
-    const game = setup()
-    const players = [this.socket.id, 'Ava', 'Beta', 'Otis']
-    let hands = {}
-    for (let player of players) {
-      hands[player] = []
-      let i = 0
-      while (i < 5) {
-        const card = game.deck.shift()
-        hands[player].push(card)
-        i++
-      }
-    }
-    game.hands = hands
-    let counter = 0
-    const playing = players[counter]
-    this.setState({game, players, playing, AI: true})
+  endTurn(game) {
+    this.socket.emit('turn', game)
   }
 
-  AIPlay(game, turn) {
-    let playing
-    if (turn === 2) {
-      playing = 0
-    } else {
-      playing = turn + 1
-    }
-    this.setState(prevState => ({game, playing: prevState.players[playing]}))
-  }
+  // startGameWithAI() {
+  //   const game = setup()
+  //   const players = [this.socket.id, 'Ava', 'Beta', 'Otis']
+  //   let hands = {}
+  //   for (let player of players) {
+  //     hands[player] = []
+  //     let i = 0
+  //     while (i < 5) {
+  //       const card = game.deck.shift()
+  //       hands[player].push(card)
+  //       i++
+  //     }
+  //   }
+  //   game.hands = hands
+  //   let counter = 0
+  //   const playing = players[counter]
+  //   this.setState({game, players, playing, AI: true})
+  // }
+
+  // AIPlay(game, turn) {
+  //   let playing
+  //   if (turn === 2) {
+  //     playing = 0
+  //   } else {
+  //     playing = turn + 1
+  //   }
+  //   this.setState(prevState => ({game, playing: prevState.players[playing]}))
+  // }
 
   render() {
     const G = this.state.game
@@ -100,7 +104,7 @@ export default class Board extends React.Component {
         {G.hands ? (
           <div>
             {players.map(player => (
-              <Move
+              <Hand
                 key={player}
                 player={player}
                 hand={G.hands[player]}
@@ -108,8 +112,7 @@ export default class Board extends React.Component {
                 playing={this.state.playing}
                 moves={moves}
                 G={this.state.game}
-                AI={this.state.AI}
-                AIPlay={this.AIPlay}
+                endTurn={this.endTurn}
               />
             ))}
             <div>
@@ -139,9 +142,6 @@ export default class Board extends React.Component {
             <button type="button" onClick={this.startGame}>
               Start Game
             </button>
-            {/* <button type="button" onClick={this.startGameWithAI}>
-              Play with bots
-            </button> */}
           </div>
         )}
       </div>
