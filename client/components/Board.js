@@ -138,7 +138,8 @@ export default class Board extends React.Component {
           <div>
             <button type="button" onClick={this.startGame}>
               Start Game
-            </button>
+            </button>{' '}
+            -- To create your own room, enter a custom url.
           </div>
         )}
       </div>
