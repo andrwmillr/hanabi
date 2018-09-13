@@ -8,9 +8,9 @@ socket.on('connect', () => {
 })
 
 socket.on('get-name', () => {
-  let name = prompt("What's your name?", 'Mr. Firework')
+  let name = prompt("What's your name?", 'Firework')
   if (!name) {
-    name = 'Mr. Firework'
+    name = 'Firework'
   }
   socket.emit('send-name', name)
 })

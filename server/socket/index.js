@@ -5,43 +5,43 @@ module.exports = (io, rooms) => {
     const gameRoom = socket.handshake.headers.referer
     socket.join(gameRoom)
 
-    if (!rooms[gameRoom]) {
-      rooms[gameRoom] = {players: [socket.id], game: {}}
-    } else {
-      rooms[gameRoom].players.push(socket.id)
-    }
-
     let room = rooms[gameRoom]
 
-    // if (!room.started) {
-    //   socket.emit('get-name')
-    // }
+    if (!room || !room.started) {
+      socket.emit('get-name')
+    }
 
-    // socket.on('send-name', name => {
-    //   room.players.push(name)
-    //   console.log('Players:', room.players)
-    //   const data = {room, name}
-    //   socket.emit('save-name', data)
-    // })
+    socket.on('send-name', name => {
+      if (!room) {
+        rooms[gameRoom] = {players: [{id: socket.id, name}], game: {}}
+        room = rooms[gameRoom]
+      } else {
+        room.players.push({id: socket.id, name})
+      }
+    })
 
     socket.on('start', game => {
-      let hands = {}
-      for (let player of room.players) {
-        hands[player] = []
-        let i = 0
-        while (i < 5) {
-          const card = game.deck.shift()
-          hands[player].push(card)
-          i++
+      if (room.started) {
+        socket.emit('start', room)
+      } else {
+        let hands = {}
+        for (let player of room.players) {
+          hands[player] = []
+          let i = 0
+          while (i < 5) {
+            const card = game.deck.shift()
+            hands[player].push(card)
+            i++
+          }
         }
+        game.hands = hands
+        room.game = game
+        room.counter = 0
+        room.turnsLeft = room.players.length
+        room.playing = room.players[room.counter]
+        io.to(gameRoom).emit('start', room)
+        room.started = true
       }
-      game.hands = hands
-      room.game = game
-      room.counter = 0
-      room.turnsLeft = room.players.length
-      room.playing = room.players[room.counter]
-      io.to(gameRoom).emit('start', room)
-      room.started = true
     })
 
     socket.on('turn', game => {
@@ -68,12 +68,13 @@ module.exports = (io, rooms) => {
     })
 
     socket.on('disconnect', () => {
-      const index = room.players.indexOf(socket.id)
+      const disconnected = room.players.find(player => player.id === socket.id)
+      const index = room.players.indexOf(disconnected)
       room.players.splice(index, 1)
       console.log(`Connection ${socket.id} has left the building`)
-      console.log('Remaining players:', room.players)
+      room.game.started = false
       if (!room.players.length) {
-        room = undefined
+        rooms[gameRoom] = undefined
       }
     })
   })
