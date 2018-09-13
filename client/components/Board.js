@@ -144,9 +144,9 @@ export default class Board extends React.Component {
 }
 
 function displayDiscard(discardArr) {
-  if (!discardArr.length) {
-    return 'None'
-  }
+  // if (!discardArr.length) {
+  //   return 'None'
+  // }
   let discardObj = {R: [], B: [], G: [], Y: [], W: []}
   for (let card of discardArr) {
     let number = card[0]
