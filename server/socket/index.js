@@ -72,7 +72,7 @@ module.exports = (io, rooms) => {
       const index = room.players.indexOf(disconnected)
       room.players.splice(index, 1)
       console.log(`Connection ${socket.id} has left the building`)
-      room.game.started = false
+      room.started = false
       if (!room.players.length) {
         rooms[gameRoom] = undefined
       }

@@ -63,7 +63,7 @@ export const moves = {
       newHint = G.hint
       const hintText = hintToText(hint[1], hint[0])
       information--
-      newHint = `${player}: ${hintText}`
+      newHint = `${player.name}: ${hintText}`
     }
     return {...G, hint: newHint, information}
   },
