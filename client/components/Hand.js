@@ -70,8 +70,8 @@ export default class Hand extends React.Component {
     const player = this.props.player
     const hand = this.props.hand
     const client = this.props.client
-    const yourHand = player === client
-    const isPlaying = this.props.playing === client
+    const yourHand = player.id === client
+    const isPlaying = this.props.playing.id === client
     const keysForCards = makeKeys(hand, player)
     return (
       <div>
@@ -84,7 +84,7 @@ export default class Hand extends React.Component {
             )}
           </div>
         ) : (
-          <h3>{player}'s Hand</h3>
+          <h3>{player.name}'s Hand</h3>
         )}
         <div className="hand">
           {yourHand
