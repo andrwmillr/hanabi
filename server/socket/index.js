@@ -8,7 +8,7 @@ module.exports = (io, rooms) => {
     let room = rooms[gameRoom]
 
     if (!room || !room.started) {
-      socket.emit('get-name')
+      // socket.emit('get-name')
     }
 
     socket.on('send-name', name => {

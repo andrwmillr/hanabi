@@ -10,11 +10,15 @@ export default class Board extends React.Component {
     this.state = {
       players: [],
       game: {},
-      playing: ''
+      playing: '',
+      name: '',
+      submittedName: false
     }
     this.socket = socket
     this.startGame = this.startGame.bind(this)
     this.endTurn = this.endTurn.bind(this)
+    this.inputName = this.inputName.bind(this)
+    this.saveName = this.saveName.bind(this)
   }
 
   componentDidMount() {
@@ -45,14 +49,6 @@ export default class Board extends React.Component {
       console.log('game over!')
       alert(`Game over! You got ${calcPoints(game.board)} points!`)
     })
-
-    // this.socket.on('save-name', data => {
-    //   console.log('setting state clientName', data)
-    //   this.setState({
-    //     players: data.room.players,
-    //     clientName: data.name
-    //   })
-    // })
   }
 
   startGame() {
@@ -62,6 +58,16 @@ export default class Board extends React.Component {
 
   endTurn(game) {
     this.socket.emit('turn', game)
+  }
+
+  inputName(evt) {
+    this.setState({name: evt.target.value})
+  }
+
+  saveName(evt) {
+    evt.preventDefault()
+    this.socket.emit('send-name', this.state.name)
+    this.setState({submittedName: true})
   }
 
   render() {
@@ -134,9 +140,24 @@ export default class Board extends React.Component {
                 </a>.
               </li>
             </ul>
-            <button type="button" onClick={this.startGame}>
-              Start Game
-            </button>
+            {!this.state.submittedName ? (
+              <div>
+                <form type="submit">
+                  <label>Enter your name:</label>
+                  <input type="text" onChange={this.inputName} />
+                </form>
+                <button type="submit" onClick={this.saveName}>
+                  Save Name
+                </button>
+              </div>
+            ) : (
+              <div>Your name: {this.state.name}</div>
+            )}
+            <p>
+              <button type="button" onClick={this.startGame}>
+                Start Game
+              </button>
+            </p>
           </div>
         )}
       </div>
@@ -166,6 +187,14 @@ function displayDiscard(discardArr) {
     </div>
   )
 }
+
+// this.socket.on('save-name', data => {
+//   console.log('setting state clientName', data)
+//   this.setState({
+//     players: data.room.players,
+//     clientName: data.name
+//   })
+// })
 
 // startGameWithAI() {
 //   const game = setup()
