@@ -10,14 +10,23 @@ export default class Board extends React.Component {
     this.state = {
       players: [],
       game: {},
-      playing: ''
+      playing: '',
+      name: '',
+      submittedName: false
     }
     this.socket = socket
     this.startGame = this.startGame.bind(this)
     this.endTurn = this.endTurn.bind(this)
+    this.inputName = this.inputName.bind(this)
+    this.saveName = this.saveName.bind(this)
   }
 
   componentDidMount() {
+    this.socket.on('add-player', players => {
+      console.log('players', players)
+      this.setState({players})
+    })
+
     this.socket.on('start', room => {
       this.setState({
         players: room.players,
@@ -45,14 +54,6 @@ export default class Board extends React.Component {
       console.log('game over!')
       alert(`Game over! You got ${calcPoints(game.board)} points!`)
     })
-
-    // this.socket.on('save-name', data => {
-    //   console.log('setting state clientName', data)
-    //   this.setState({
-    //     players: data.room.players,
-    //     clientName: data.name
-    //   })
-    // })
   }
 
   startGame() {
@@ -62,6 +63,16 @@ export default class Board extends React.Component {
 
   endTurn(game) {
     this.socket.emit('turn', game)
+  }
+
+  inputName(evt) {
+    this.setState({name: evt.target.value})
+  }
+
+  saveName(evt) {
+    evt.preventDefault()
+    this.socket.emit('send-name', this.state.name)
+    this.setState({submittedName: true})
   }
 
   render() {
@@ -120,9 +131,7 @@ export default class Board extends React.Component {
               </li>
               <li>To create a "private" room, enter a custom url.</li>
               <li>Open multiple tabs to demo the game by yourself.</li>
-              <li>
-                Start your game only after all players have entered their names.
-              </li>
+              <li>Start your game once all players have joined.</li>
               <li>
                 The code for this project is{' '}
                 <a
@@ -134,9 +143,28 @@ export default class Board extends React.Component {
                 </a>.
               </li>
             </ul>
-            <button type="button" onClick={this.startGame}>
-              Start Game
-            </button>
+            {!this.state.submittedName ? (
+              <div>
+                <form type="submit">
+                  <label>Enter your name:</label>
+                  <input type="text" onChange={this.inputName} />
+                </form>
+                <button type="submit" onClick={this.saveName}>
+                  Save Name
+                </button>
+              </div>
+            ) : (
+              <div>You: {this.state.name}</div>
+            )}
+            Players:
+            <ul>
+              {players.map(player => <li key={player.id}>{player.name}</li>)}
+            </ul>
+            <p>
+              <button type="button" onClick={this.startGame}>
+                Start Game
+              </button>
+            </p>
           </div>
         )}
       </div>
@@ -166,6 +194,14 @@ function displayDiscard(discardArr) {
     </div>
   )
 }
+
+// this.socket.on('save-name', data => {
+//   console.log('setting state clientName', data)
+//   this.setState({
+//     players: data.room.players,
+//     clientName: data.name
+//   })
+// })
 
 // startGameWithAI() {
 //   const game = setup()

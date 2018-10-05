@@ -7,16 +7,15 @@ module.exports = (io, rooms) => {
 
     let room = rooms[gameRoom]
 
-    if (!room || !room.started) {
-      socket.emit('get-name')
-    }
-
     socket.on('send-name', name => {
       if (!room) {
         rooms[gameRoom] = {players: [{id: socket.id, name}], game: {}}
         room = rooms[gameRoom]
-      } else {
+      } else if (!room.started)
         room.players.push({id: socket.id, name})
+      }
+      if (!room.started) {        
+        io.to(gameRoom).emit('add-player', room.players)
       }
     })
 
@@ -68,8 +67,11 @@ module.exports = (io, rooms) => {
     })
 
     socket.on('disconnect', () => {
-      const disconnected = room.players.find(player => player.id === socket.id)
-      const index = room.players.indexOf(disconnected)
+      console.log('room:', room)
+      const disconnectedPlayer = room.players.find(
+        player => player.id === socket.id
+      )
+      const index = room.players.indexOf(disconnectedPlayer)
       room.players.splice(index, 1)
       console.log(`Connection ${socket.id} has left the building`)
       room.started = false
