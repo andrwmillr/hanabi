@@ -7,18 +7,16 @@ module.exports = (io, rooms) => {
 
     let room = rooms[gameRoom]
 
-    if (!room || !room.started) {
-      // socket.emit('get-name')
-    }
-
     socket.on('send-name', name => {
       if (!room) {
         rooms[gameRoom] = {players: [{id: socket.id, name}], game: {}}
         room = rooms[gameRoom]
-      } else {
+      } else if (!room.started)
         room.players.push({id: socket.id, name})
       }
-      io.to(gameRoom).emit('add-player', room.players)
+      if (!room.started) {        
+        io.to(gameRoom).emit('add-player', room.players)
+      }
     })
 
     socket.on('start', game => {
