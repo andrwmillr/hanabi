@@ -26,14 +26,18 @@ module.exports = (io, rooms) => {
       } else {
         let hands = {}
         for (let player of room.players) {
-          hands[player] = []
+          console.log('dealing to', player, 'hands:', hands)
+          hands[player.id] = []
+          console.log('hands:', hands)
           let i = 0
           while (i < 5) {
             const card = game.deck.shift()
-            hands[player].push(card)
+            console.log('adding to hand. hands:', hands)
+            hands[player.id].push(card)
             i++
           }
         }
+        console.log('hands', hands)
         game.hands = hands
         room.game = game
         room.counter = 0

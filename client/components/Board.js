@@ -75,9 +75,9 @@ export default class Board extends React.Component {
           <div>
             {players.map(player => (
               <Hand
-                key={player}
+                key={player.id}
                 player={player}
-                hand={G.hands[player]}
+                hand={G.hands[player.id]}
                 client={this.socket.id}
                 playing={this.state.playing}
                 moves={moves}

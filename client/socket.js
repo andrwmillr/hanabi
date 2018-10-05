@@ -8,7 +8,7 @@ socket.on('connect', () => {
 })
 
 socket.on('get-name', () => {
-  let name = prompt("What's your name?")
+  let name = prompt("What's your name?", 'NAME')
   if (!name) {
     name = 'Hal'
   }

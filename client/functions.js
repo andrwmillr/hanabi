@@ -22,19 +22,19 @@ export const setup = () => {
 export const moves = {
   play(G, player, card) {
     const newG = {...G}
-    card = newG.hands[player].find(selected => selected === card)
+    card = newG.hands[player.id].find(selected => selected === card)
     const value = card[0]
     const color = card[1]
     if (newG.board[color] === value - 1) {
       newG.board[color] = value
-      const newHandAndDeck = draw(newG.hands[player], newG.deck, card)
-      newG.hands[player] = newHandAndDeck.hand
+      const newHandAndDeck = draw(newG.hands[player.id], newG.deck, card)
+      newG.hands[player.id] = newHandAndDeck.hand
       const deck = newHandAndDeck.deck
       return {...newG, deck}
     } else {
       const fuse = newG.fuse - 1
-      const newHandAndDeck = draw(newG.hands[player], newG.deck, card)
-      newG.hands[player] = newHandAndDeck.hand
+      const newHandAndDeck = draw(newG.hands[player.id], newG.deck, card)
+      newG.hands[player.id] = newHandAndDeck.hand
       newG.discard.push(card)
       const deck = newHandAndDeck.deck
       return {...newG, deck, fuse}
@@ -47,8 +47,8 @@ export const moves = {
     if (information < 8) {
       information++
     }
-    const newHandAndDeck = draw(newG.hands[player], newG.deck, card)
-    newG.hands[player] = newHandAndDeck.hand
+    const newHandAndDeck = draw(newG.hands[player.id], newG.deck, card)
+    newG.hands[player.id] = newHandAndDeck.hand
     newG.discard.push(card)
     const deck = newHandAndDeck.deck
     return {...newG, deck, information}
