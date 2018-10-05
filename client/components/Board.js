@@ -132,10 +132,37 @@ export default class Board extends React.Component {
           </div>
         ) : (
           <div>
+            Play Hanabi in your browser.
+            <ul>
+              <li>
+                Learn the rules{' '}
+                <a
+                  href="https://en.wikipedia.org/wiki/Hanabi_(card_game)#Gameplay"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  here
+                </a>.
+              </li>
+              <li>To create a "private" room, enter a custom url.</li>
+              <li>Open multiple tabs to demo the game by yourself.</li>
+              <li>
+                Start your game only after all players have entered their names.
+              </li>
+              <li>
+                The code for this project is{' '}
+                <a
+                  href="https://github.com/andrwmillr/hanabi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  here
+                </a>.
+              </li>
+            </ul>
             <button type="button" onClick={this.startGame}>
               Start Game
-            </button>{' '}
-            -- To create your own room, enter a custom url.
+            </button>
           </div>
         )}
       </div>
