@@ -11,10 +11,10 @@ module.exports = (io, rooms) => {
       if (!room) {
         rooms[gameRoom] = {players: [{id: socket.id, name}], game: {}}
         room = rooms[gameRoom]
-      } else if (!room.started)
+      } else if (!room.started) {
         room.players.push({id: socket.id, name})
       }
-      if (!room.started) {        
+      if (!room.started) {
         io.to(gameRoom).emit('add-player', room.players)
       }
     })
@@ -67,7 +67,6 @@ module.exports = (io, rooms) => {
     })
 
     socket.on('disconnect', () => {
-      console.log('room:', room)
       const disconnectedPlayer = room.players.find(
         player => player.id === socket.id
       )
