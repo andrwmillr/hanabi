@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Card = props => {
+  // determine what should be displayed
   let number
   let color
   let style

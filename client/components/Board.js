@@ -64,41 +64,14 @@ export default class Board extends React.Component {
     this.socket.emit('turn', game)
   }
 
-  // startGameWithAI() {
-  //   const game = setup()
-  //   const players = [this.socket.id, 'Ava', 'Beta', 'Otis']
-  //   let hands = {}
-  //   for (let player of players) {
-  //     hands[player] = []
-  //     let i = 0
-  //     while (i < 5) {
-  //       const card = game.deck.shift()
-  //       hands[player].push(card)
-  //       i++
-  //     }
-  //   }
-  //   game.hands = hands
-  //   let counter = 0
-  //   const playing = players[counter]
-  //   this.setState({game, players, playing, AI: true})
-  // }
-
-  // AIPlay(game, turn) {
-  //   let playing
-  //   if (turn === 2) {
-  //     playing = 0
-  //   } else {
-  //     playing = turn + 1
-  //   }
-  //   this.setState(prevState => ({game, playing: prevState.players[playing]}))
-  // }
-
   render() {
     const G = this.state.game
     const players = this.state.players
     return (
       <div style={{padding: 20}}>
+        {/* conditionally render depending on whether game has started */}
         {G.hands ? (
+          // game HAS started
           <div>
             {players.map(player => (
               <Hand
@@ -131,6 +104,7 @@ export default class Board extends React.Component {
             </div>
           </div>
         ) : (
+          // game HAS NOT started
           <div>
             Play Hanabi in your browser.
             <ul>
@@ -171,9 +145,6 @@ export default class Board extends React.Component {
 }
 
 function displayDiscard(discardArr) {
-  // if (!discardArr.length) {
-  //   return 'None'
-  // }
   let discardObj = {R: [], B: [], G: [], Y: [], W: []}
   for (let card of discardArr) {
     let number = card[0]
@@ -195,3 +166,32 @@ function displayDiscard(discardArr) {
     </div>
   )
 }
+
+// startGameWithAI() {
+//   const game = setup()
+//   const players = [this.socket.id, 'Ava', 'Beta', 'Otis']
+//   let hands = {}
+//   for (let player of players) {
+//     hands[player] = []
+//     let i = 0
+//     while (i < 5) {
+//       const card = game.deck.shift()
+//       hands[player].push(card)
+//       i++
+//     }
+//   }
+//   game.hands = hands
+//   let counter = 0
+//   const playing = players[counter]
+//   this.setState({game, players, playing, AI: true})
+// }
+
+// AIPlay(game, turn) {
+//   let playing
+//   if (turn === 2) {
+//     playing = 0
+//   } else {
+//     playing = turn + 1
+//   }
+//   this.setState(prevState => ({game, playing: prevState.players[playing]}))
+// }

@@ -12,6 +12,16 @@ export default class Hand extends React.Component {
     this.selectCard = this.selectCard.bind(this)
   }
 
+  selectCard(card, index) {
+    const domCard = document.getElementById([this.props.player, card, index])
+    const domSelected = document.getElementsByClassName('selected')
+    if (domSelected.length) {
+      domSelected[0].classList.remove('selected')
+    }
+    domCard.classList.add('selected')
+    this.setState({selected: card})
+  }
+
   play(evt) {
     evt.preventDefault()
     const player = this.props.player
@@ -56,26 +66,16 @@ export default class Hand extends React.Component {
     }
   }
 
-  selectCard(card, index) {
-    const domCard = document.getElementById([this.props.player, card, index])
-    const domSelected = document.getElementsByClassName('selected')
-    if (domSelected.length) {
-      domSelected[0].classList.remove('selected')
-    }
-    domCard.classList.add('selected')
-    this.setState({selected: card})
-  }
-
   render() {
     const player = this.props.player
     const hand = this.props.hand
-    const client = this.props.client
-    const yourHand = player.id === client
-    const isPlaying = this.props.playing.id === client
+    const isYourHand = player.id === this.props.client
+    const isPlaying = this.props.playing.id === this.props.client
     const keysForCards = makeKeys(hand, player)
+
     return (
       <div>
-        {yourHand ? (
+        {isYourHand ? (
           <div>
             {isPlaying ? (
               <h3>Your Hand (it's your turn)</h3>
@@ -87,7 +87,8 @@ export default class Hand extends React.Component {
           <h3>{player.name}'s Hand</h3>
         )}
         <div className="hand">
-          {yourHand
+          {/* render hand */}
+          {isYourHand
             ? hand.map((card, index) => {
                 const key = keysForCards[index]
                 return (
@@ -115,9 +116,10 @@ export default class Hand extends React.Component {
               })}
         </div>
 
+        {/* display play options if playing */}
         {isPlaying && (
           <div>
-            {yourHand ? (
+            {isYourHand ? (
               <div className="options">
                 <div className="option">
                   <button type="button" onClick={this.play}>
