@@ -131,9 +131,7 @@ export default class Board extends React.Component {
               </li>
               <li>To create a "private" room, enter a custom url.</li>
               <li>Open multiple tabs to demo the game by yourself.</li>
-              <li>
-                Start your game only after all players have entered their names.
-              </li>
+              <li>Start your game once all players have joined.</li>
               <li>
                 The code for this project is{' '}
                 <a
@@ -158,7 +156,7 @@ export default class Board extends React.Component {
             ) : (
               <div>You: {this.state.name}</div>
             )}
-            Other players:
+            Players:
             <ul>
               {players.map(player => <li key={player.id}>{player.name}</li>)}
             </ul>
