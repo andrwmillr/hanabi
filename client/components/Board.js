@@ -22,6 +22,11 @@ export default class Board extends React.Component {
   }
 
   componentDidMount() {
+    this.socket.on('add-player', players => {
+      console.log('players', players)
+      this.setState({players})
+    })
+
     this.socket.on('start', room => {
       this.setState({
         players: room.players,
@@ -151,8 +156,12 @@ export default class Board extends React.Component {
                 </button>
               </div>
             ) : (
-              <div>Your name: {this.state.name}</div>
+              <div>You: {this.state.name}</div>
             )}
+            Other players:
+            <ul>
+              {players.map(player => <li key={player.id}>{player.name}</li>)}
+            </ul>
             <p>
               <button type="button" onClick={this.startGame}>
                 Start Game

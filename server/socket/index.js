@@ -18,6 +18,7 @@ module.exports = (io, rooms) => {
       } else {
         room.players.push({id: socket.id, name})
       }
+      socket.emit('add-player', room.players)
     })
 
     socket.on('start', game => {
