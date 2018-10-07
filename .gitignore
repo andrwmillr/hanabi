@@ -5,6 +5,12 @@ secrets.js
 .DS_Store
 npm-debug.log
 yarn-error.log
+.editorconfig
+.eslintrc.json
+.prettierignore
+.prettierrc.yml
+package-lock.json
+webpack.config.js
 
 ai.js
 history.js
