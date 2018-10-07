@@ -67,16 +67,6 @@ export const moves = {
     }
     return {...G, hint: newHint, information}
   }
-
-  // giveHintAI(player, hint, G) {
-  //   let information = G.information
-  //   if (information === 0) {
-  //     hint = 0
-  //   } else {
-  //     information--
-  //   }
-  //   return {...G, hint: [player, hint], information}
-  // }
 }
 
 export const calcPoints = board => {

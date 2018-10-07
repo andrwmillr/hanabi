@@ -7,12 +7,4 @@ socket.on('connect', () => {
   console.log('Connected!')
 })
 
-socket.on('get-name', () => {
-  let name = prompt("What's your name?", 'NAME')
-  if (!name) {
-    name = 'Hal'
-  }
-  socket.emit('send-name', name)
-})
-
 export default socket
