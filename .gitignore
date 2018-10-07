@@ -10,7 +10,6 @@ yarn-error.log
 .prettierignore
 .prettierrc.yml
 package-lock.json
-webpack.config.js
 
 ai.js
 history.js
