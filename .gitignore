@@ -9,7 +9,3 @@ yarn-error.log
 .eslintrc.json
 .prettierignore
 .prettierrc.yml
-package-lock.json
-
-ai.js
-history.js
