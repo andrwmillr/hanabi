@@ -67,15 +67,17 @@ module.exports = (io, rooms) => {
     })
 
     socket.on('disconnect', () => {
-      const disconnectedPlayer = room.players.find(
-        player => player.id === socket.id
-      )
-      const index = room.players.indexOf(disconnectedPlayer)
-      room.players.splice(index, 1)
-      console.log(`Connection ${socket.id} has left the building`)
-      room.started = false
-      if (!room.players.length) {
-        rooms[gameRoom] = undefined
+      console.log(`Connection ${socket.id} has disconnected.`)
+      if (room && room.players.length) {
+        const disconnectedPlayer = room.players.find(
+          player => player.id === socket.id
+        )
+        const index = room.players.indexOf(disconnectedPlayer)
+        room.players.splice(index, 1)
+        room.started = false
+        if (!room.players.length) {
+          rooms[gameRoom] = undefined
+        }
       }
     })
   })
