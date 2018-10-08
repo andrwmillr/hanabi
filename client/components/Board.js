@@ -17,8 +17,6 @@ export default class Board extends React.Component {
     this.socket = socket;
     this.startGame = this.startGame.bind(this);
     this.endTurn = this.endTurn.bind(this);
-    this.inputName = this.inputName.bind(this);
-    this.saveName = this.saveName.bind(this);
   }
 
   componentDidMount() {
@@ -50,7 +48,6 @@ export default class Board extends React.Component {
     });
 
     this.socket.on('game-over', game => {
-      console.log('game over!');
       alert(`Game over! You got ${calcPoints(game.board)} points!`);
     });
   }
@@ -62,16 +59,6 @@ export default class Board extends React.Component {
 
   endTurn(game) {
     this.socket.emit('turn', game);
-  }
-
-  inputName(evt) {
-    this.setState({ name: evt.target.value });
-  }
-
-  saveName(evt) {
-    evt.preventDefault();
-    this.socket.emit('send-name', this.state.name);
-    this.setState({ submittedName: true });
   }
 
   render() {
