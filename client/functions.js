@@ -1,5 +1,6 @@
 import { cards, draw, hintToText } from './setup';
 import shuffle from 'shuffle-array';
+import React from 'react';
 
 export const setup = () => {
   let deck = shuffle(cards);
@@ -75,4 +76,27 @@ export const calcPoints = board => {
     if (board.hasOwnProperty(color)) points = points + board[color];
   }
   return points;
+};
+
+export const displayDiscard = discardArr => {
+  let discardObj = { R: [], B: [], G: [], Y: [], W: [] };
+  for (let card of discardArr) {
+    let number = card[0];
+    let color = card[1];
+    discardObj[color].push(number);
+  }
+  let dispArr = [];
+  for (let color of Object.keys(discardObj)) {
+    discardObj[color].sort((a, b) => a - b);
+    let numStr = discardObj[color].join(', ');
+    dispArr.push([color, numStr]);
+  }
+  return (
+    <div className="discard">
+      {dispArr.map(el => {
+        let [color, numStr] = [el[0], el[1]];
+        return <div key={color}>{color + ' - ' + numStr}</div>;
+      })}
+    </div>
+  );
 };

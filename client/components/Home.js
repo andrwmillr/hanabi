@@ -5,13 +5,9 @@ export default class Home extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: '',
-      submittedName: false,
       walkthroughPage: false,
     };
     this.showWalkthrough = this.showWalkthrough.bind(this);
-    // this.inputName = this.inputName.bind(this);
-    // this.saveName = this.saveName.bind(this);
   }
 
   showWalkthrough() {
