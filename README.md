@@ -1,3 +1,9 @@
-A JavaScript implementation of the card game Hanabi, coded with React and Socket.IO.
+<img src=https://raw.githubusercontent.com/andrwmillr/hanabi/master/public/hanabi-logo.jpg />
 
-Learn the rules [here](<https://en.wikipedia.org/wiki/Hanabi_(card_game)>). Play at [playhanabi.online](https://www.playhanabi.online).
+## Play Hanabi in your browser.
+
+[www.playhanabi.online](https://www.playhanabi.online).
+
+## Rules
+
+## Technology
