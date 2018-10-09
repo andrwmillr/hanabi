@@ -57,6 +57,17 @@ img {
   padding-right: auto;
 }
 
+.name-entry {
+  margin: 5px 15%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.name-input {
+  text-align: center;
+}
+
 .center {
   margin: 0 auto;
   align-items: center;

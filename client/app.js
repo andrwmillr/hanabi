@@ -17,7 +17,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.roomCreated);
     if (this.state.roomCreated) {
       return (
         <div className="content-container">

@@ -22,26 +22,28 @@ module.exports = (io, rooms) => {
 
     socket.on('start', game => {
       let room = rooms[gameRoom];
-      if (room.started) {
-        socket.emit('start', room);
-      } else {
-        let hands = {};
-        for (let player of room.players) {
-          hands[player.id] = [];
-          let i = 0;
-          while (i < 5) {
-            const card = game.deck.shift();
-            hands[player.id].push(card);
-            i++;
+      if (room && room.players) {
+        if (room.started) {
+          socket.emit('start', room);
+        } else {
+          let hands = {};
+          for (let player of room.players) {
+            hands[player.id] = [];
+            let i = 0;
+            while (i < 5) {
+              const card = game.deck.shift();
+              hands[player.id].push(card);
+              i++;
+            }
           }
+          game.hands = hands;
+          room.game = game;
+          room.counter = 0;
+          room.turnsLeft = room.players.length;
+          room.playing = room.players[room.counter];
+          io.to(gameRoom).emit('start', room);
+          room.started = true;
         }
-        game.hands = hands;
-        room.game = game;
-        room.counter = 0;
-        room.turnsLeft = room.players.length;
-        room.playing = room.players[room.counter];
-        io.to(gameRoom).emit('start', room);
-        room.started = true;
       }
     });
 

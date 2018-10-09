@@ -63,16 +63,14 @@ export default class Game extends React.Component {
       return (
         <div className="vert-flex">
           {!this.state.submittedName ? (
-            <div className="setup-item" style={{ padding: '5px 0' }}>
-              <form type="submit">
-                <input
-                  type="text"
-                  placeholder="enter your name"
-                  onChange={this.inputName}
-                  style={{ textAlign: 'center' }}
-                />
-              </form>
-              <button type="submit" onClick={this.saveName}>
+            <div className="name-entry">
+              <input
+                className="name-input"
+                type="text"
+                placeholder="enter your name"
+                onChange={this.inputName}
+              />
+              <button type="button" onClick={this.saveName}>
                 Save
               </button>
             </div>

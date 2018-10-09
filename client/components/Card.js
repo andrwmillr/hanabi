@@ -1,23 +1,23 @@
-import React from 'react'
+import React from 'react';
 
 const Card = props => {
   // determine what should be displayed
-  let number
-  let color
-  let style
+  let number;
+  let color;
+  let style;
   if (!props.show) {
-    color = 'grey'
-    number = '?'
-    style = {backgroundColor: 'grey', color: 'grey'}
+    color = 'grey';
+    number = '?';
+    style = { backgroundColor: 'grey', color: 'grey' };
   } else {
-    number = props.card[0]
-    if (props.card[1] === 'grey') color = 'grey'
-    if (props.card[1] === 'R') color = 'red'
-    if (props.card[1] === 'Y') color = 'yellow'
-    if (props.card[1] === 'B') color = 'blue'
-    if (props.card[1] === 'W') color = 'white'
-    if (props.card[1] === 'G') color = 'green'
-    style = {backgroundColor: `${color}`}
+    number = props.card[0];
+    if (props.card[1] === 'grey') color = 'grey';
+    if (props.card[1] === 'R') color = 'red';
+    if (props.card[1] === 'Y') color = 'yellow';
+    if (props.card[1] === 'B') color = 'blue';
+    if (props.card[1] === 'W') color = 'white';
+    if (props.card[1] === 'G') color = 'green';
+    style = { backgroundColor: `${color}`, color: 'black' };
   }
 
   return (
@@ -30,7 +30,7 @@ const Card = props => {
         {number}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;
