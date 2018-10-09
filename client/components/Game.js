@@ -51,7 +51,7 @@ export default class Game extends React.Component {
     if (this.state.startedGame) {
       console.log(this.state.game);
       return (
-        <div>
+        <div className="vert-flex">
           <Board
             game={this.state.game}
             playing={this.state.playing}
@@ -61,47 +61,44 @@ export default class Game extends React.Component {
       );
     } else {
       return (
-        <div style={{ padding: 20 }}>
-          Play Hanabi in your browser.
-          <ul>
-            <li>To create a "private" room, enter a custom url.</li>
-            <li>Open multiple tabs to demo the game by yourself.</li>
-            <li>Start your game once all players have joined.</li>
-            <li>
-              The code for this project is{' '}
-              <a
-                href="https://github.com/andrwmillr/hanabi"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                here
-              </a>.
-            </li>
-          </ul>
+        <div className="vert-flex">
           {!this.state.submittedName ? (
-            <div>
+            <div className="setup-item" style={{ padding: '5px 0' }}>
               <form type="submit">
-                <label>Enter your name:</label>
-                <input type="text" onChange={this.inputName} />
+                <input
+                  type="text"
+                  placeholder="enter your name"
+                  onChange={this.inputName}
+                  style={{ textAlign: 'center' }}
+                />
               </form>
               <button type="submit" onClick={this.saveName}>
-                Save Name
+                Save
               </button>
             </div>
           ) : (
-            <div>You: {this.state.name}</div>
+            <div className="setup-item">You: {this.state.name}</div>
           )}
-          Players:
-          <ul>
-            {this.state.players.map(player => (
-              <li key={player.id}>{player.name}</li>
-            ))}
-          </ul>
-          <p>
-            <button type="button" onClick={this.startGame}>
+          <div className="setup-item">
+            Players:{' '}
+            {!this.state.players.length ? (
+              <div>No one yet...</div>
+            ) : (
+              this.state.players.map(player => player.name).join(', ')
+            )}
+          </div>
+          <div className="setup-item">
+            <button
+              className="button -regular"
+              type="button"
+              onClick={this.startGame}
+            >
               Start Game
             </button>
-          </p>
+          </div>
+          <div className="setup-item">
+            (Open multiple tabs to demo the game by yourself.)
+          </div>
         </div>
       );
     }

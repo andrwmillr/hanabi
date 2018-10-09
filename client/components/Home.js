@@ -19,12 +19,20 @@ export default class Home extends React.Component {
   render() {
     if (!this.state.walkthroughPage) {
       return (
-        <div>
-          <button type="button" onClick={this.props.enterNewGameScreen}>
-            Start a new game
+        <div className="horiz-flex">
+          <button
+            className="button -regular"
+            type="button"
+            onClick={this.showWalkthrough}
+          >
+            Learn the rules
           </button>
-          <button type="button" onClick={this.showWalkthrough}>
-            How to play
+          <button
+            className="button -regular"
+            type="button"
+            onClick={this.props.enterNewGameScreen}
+          >
+            Start a game
           </button>
         </div>
       );

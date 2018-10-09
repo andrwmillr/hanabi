@@ -2,7 +2,7 @@ import React from 'react';
 
 const Walkthrough = props => {
   return (
-    <div>
+    <div className="vert-flex">
       <div>
         Learn the rules{' '}
         <a
@@ -11,7 +11,7 @@ const Walkthrough = props => {
           target="_blank"
         >
           here
-        </a>.
+        </a>. (Walkthrough coming soon...)
       </div>
       <button type="button" onClick={props.showWalkthrough}>
         Back

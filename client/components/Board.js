@@ -53,7 +53,7 @@ export default class Board extends React.Component {
     return !G.hands ? (
       <div>Loading...</div>
     ) : (
-      <div style={{ padding: 20 }}>
+      <div>
         <div>
           {players.map(player => (
             <Hand
