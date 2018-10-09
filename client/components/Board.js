@@ -53,36 +53,33 @@ export default class Board extends React.Component {
     return !G.hands ? (
       <div>Loading...</div>
     ) : (
-      <div>
-        <div>
-          {players.map(player => (
-            <Hand
-              key={player.id}
-              player={player}
-              hand={G.hands[player.id]}
-              client={this.socket.id}
-              playing={this.state.playing}
-              moves={moves}
-              G={this.state.game}
-              endTurn={this.endTurn}
-            />
-          ))}
-          <div>
-            <Score board={G.board} />
+      <div className="board">
+        {players.map(player => (
+          <Hand
+            key={player.id}
+            player={player}
+            hand={G.hands[player.id]}
+            client={this.socket.id}
+            playing={this.state.playing}
+            moves={moves}
+            G={this.state.game}
+            endTurn={this.endTurn}
+          />
+        ))}
+        <Score board={G.board} />
+        <div className="game-info">
+          <div className="options">
+            <div className="option">Information / {G.information}</div>
+            <div className="option">Fuse / {G.fuse}</div>
+            <div className="option">Deck / {G.deck.length}</div>
           </div>
           <div className="options">
-            <div className="option">Information tokens: {G.information}</div>
-            <div className="option">Fuse: {G.fuse}</div>
-            {G.hint.length ? (
-              <div className="option">Hint: {G.hint}</div>
-            ) : (
-              <div className="option">Hint: none</div>
-            )}
+            <div className="option">Hint / {G.hint}</div>
           </div>
           <div className="options">
-            <div className="option">Cards in deck: {G.deck.length}</div>
-
-            <div className="option">Discard: {displayDiscard(G.discard)}</div>
+            <div className="option" style={{ width: '100%' }}>
+              Discard {displayDiscard(G.discard)}
+            </div>
           </div>
         </div>
       </div>

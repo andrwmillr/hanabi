@@ -49,9 +49,8 @@ export default class Game extends React.Component {
 
   render() {
     if (this.state.startedGame) {
-      console.log(this.state.game);
       return (
-        <div className="vert-flex">
+        <div id="board" className="content vert-flex">
           <Board
             game={this.state.game}
             playing={this.state.playing}
@@ -61,7 +60,7 @@ export default class Game extends React.Component {
       );
     } else {
       return (
-        <div className="vert-flex">
+        <div id="game" className="content vert-flex">
           {!this.state.submittedName ? (
             <div className="name-entry">
               <input

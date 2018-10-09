@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header = props => {
   return (
-    <div className="navbar">
+    <div id="header" className="content navbar">
       {' '}
       <div style={{ width: '100px' }} />
       <div>

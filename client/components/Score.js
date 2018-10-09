@@ -1,8 +1,8 @@
-import React from 'react'
-import Card from './Card'
+import React from 'react';
+import Card from './Card';
 
 const Score = props => (
-  <div>
+  <div id="score">
     <h3>Board </h3>
     <div className="hand">
       <div>
@@ -22,6 +22,6 @@ const Score = props => (
       </div>
     </div>
   </div>
-)
+);
 
-export default Score
+export default Score;

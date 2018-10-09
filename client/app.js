@@ -20,23 +20,15 @@ export default class App extends React.Component {
     if (this.state.roomCreated) {
       return (
         <div className="content-container">
-          <div className="content">
-            <Header />
-          </div>
-          <div className="content">
-            <Game />
-          </div>
+          <Header />
+          <Game />
         </div>
       );
     } else {
       return (
         <div className="content-container">
-          <div className="content">
-            <Header />
-          </div>
-          <div className="content">
-            <Home enterNewGameScreen={this.enterNewGameScreen} />
-          </div>
+          <Header />
+          <Home enterNewGameScreen={this.enterNewGameScreen} />
         </div>
       );
     }

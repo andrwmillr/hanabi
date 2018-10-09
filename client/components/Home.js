@@ -19,7 +19,7 @@ export default class Home extends React.Component {
   render() {
     if (!this.state.walkthroughPage) {
       return (
-        <div className="horiz-flex">
+        <div id="home" className="content horiz-flex">
           <button
             className="button -regular"
             type="button"
@@ -38,7 +38,7 @@ export default class Home extends React.Component {
       );
     } else {
       return (
-        <div>
+        <div id="walkthrough" className="content">
           <Walkthrough showWalkthrough={this.showWalkthrough} />
         </div>
       );

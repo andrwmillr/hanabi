@@ -1,82 +1,83 @@
-import React from 'react'
-import Card from './Card'
-import Hint from './Hint'
+import React from 'react';
+import Card from './Card';
+import Hint from './Hint';
 
 export default class Hand extends React.Component {
   constructor() {
-    super()
-    this.state = {selected: null}
-    this.play = this.play.bind(this)
-    this.discard = this.discard.bind(this)
-    this.giveHint = this.giveHint.bind(this)
-    this.selectCard = this.selectCard.bind(this)
+    super();
+    this.state = { selected: null };
+    this.play = this.play.bind(this);
+    this.discard = this.discard.bind(this);
+    this.giveHint = this.giveHint.bind(this);
+    this.selectCard = this.selectCard.bind(this);
   }
 
   selectCard(card, index) {
-    const domCard = document.getElementById([this.props.player, card, index])
-    const domSelected = document.getElementsByClassName('selected')
+    const domCard = document.getElementById([this.props.player, card, index]);
+    const domSelected = document.getElementsByClassName('selected');
     if (domSelected.length) {
-      domSelected[0].classList.remove('selected')
+      domSelected[0].classList.remove('selected');
     }
-    domCard.classList.add('selected')
-    this.setState({selected: card})
+    domCard.classList.add('selected');
+    this.setState({ selected: card });
   }
 
   play(evt) {
-    evt.preventDefault()
-    const player = this.props.player
-    const card = this.state.selected
-    const newG = this.props.moves.play(this.props.G, player, card)
-    const domSelected = document.getElementsByClassName('selected')
+    evt.preventDefault();
+    const player = this.props.player;
+    const card = this.state.selected;
+    const newG = this.props.moves.play(this.props.G, player, card);
+    const domSelected = document.getElementsByClassName('selected');
     if (domSelected.length) {
-      domSelected[0].classList.remove('selected')
+      domSelected[0].classList.remove('selected');
     }
-    this.props.endTurn(newG)
+    this.props.endTurn(newG);
   }
 
   discard(evt) {
-    evt.preventDefault()
-    const player = this.props.player
-    const card = this.state.selected
-    const newG = this.props.moves.discard(this.props.G, player, card)
-    const domSelected = document.getElementsByClassName('selected')
+    evt.preventDefault();
+    const player = this.props.player;
+    const card = this.state.selected;
+    const newG = this.props.moves.discard(this.props.G, player, card);
+    const domSelected = document.getElementsByClassName('selected');
     if (domSelected.length) {
-      domSelected[0].classList.remove('selected')
+      domSelected[0].classList.remove('selected');
     }
-    this.props.endTurn(newG)
+    this.props.endTurn(newG);
   }
 
   giveHint(evt, hint) {
-    evt.preventDefault()
-    const player = this.props.player
-    let newG
+    evt.preventDefault();
+    const player = this.props.player;
+    let newG;
     if (this.props.AI) {
-      newG = this.props.moves.giveHintAI(player, hint, this.props.G)
+      newG = this.props.moves.giveHintAI(player, hint, this.props.G);
     } else {
-      newG = this.props.moves.giveHint(player, hint, this.props.G)
+      newG = this.props.moves.giveHint(player, hint, this.props.G);
     }
     if (newG.hint === 'There are no information tokens left!') {
-      alert(newG.hint)
+      alert(newG.hint);
     } else {
-      const domSelected = document.getElementsByClassName('selected')
+      const domSelected = document.getElementsByClassName('selected');
       if (domSelected.length) {
-        domSelected[0].classList.remove('selected')
+        domSelected[0].classList.remove('selected');
       }
-      this.props.endTurn(newG)
+      this.props.endTurn(newG);
     }
   }
 
   render() {
-    const player = this.props.player
-    const hand = this.props.hand
-    const isYourHand = player.id === this.props.client
-    const isPlaying = this.props.playing.id === this.props.client
-    const keysForCards = makeKeys(hand, player)
+    const player = this.props.player;
+    const hand = this.props.hand;
+    const isYourHand = player.id === this.props.client;
+    const isPlaying = this.props.playing.id === this.props.client;
+    const keysForCards = makeKeys(hand, player);
 
     return (
-      <div>
+      <div id="hand-comp">
+        {/* render name */}
         {isYourHand ? (
-          <div>
+          <div id="name">
             {isPlaying ? (
               <h3>Your Hand (it's your turn)</h3>
             ) : (
@@ -86,11 +87,12 @@ export default class Hand extends React.Component {
         ) : (
           <h3>{player.name}'s Hand</h3>
         )}
+
         <div className="hand">
           {/* render hand */}
           {isYourHand
             ? hand.map((card, index) => {
-                const key = keysForCards[index]
+                const key = keysForCards[index];
                 return (
                   <div key={key} onClick={() => this.selectCard(card, index)}>
                     <Card
@@ -100,7 +102,7 @@ export default class Hand extends React.Component {
                       player={player}
                     />
                   </div>
-                )
+                );
               })
             : hand.map((card, index) => {
                 return (
@@ -112,11 +114,11 @@ export default class Hand extends React.Component {
                       player={player}
                     />
                   </div>
-                )
+                );
               })}
         </div>
 
-        {/* display play options if playing */}
+        {/* render play options if playing */}
         {isPlaying && (
           <div>
             {isYourHand ? (
@@ -142,22 +144,22 @@ export default class Hand extends React.Component {
           </div>
         )}
       </div>
-    )
+    );
   }
 }
 
 function makeKeys(hand, player) {
-  const checkerObj = {}
-  const keys = []
+  const checkerObj = {};
+  const keys = [];
   for (let card of hand) {
-    let existing = checkerObj[card]
+    let existing = checkerObj[card];
     if (existing) {
-      keys.push(player + card + existing)
-      checkerObj[card]++
+      keys.push(player + card + existing);
+      checkerObj[card]++;
     } else {
-      keys.push(player + card)
-      checkerObj[card] = 1
+      keys.push(player + card);
+      checkerObj[card] = 1;
     }
   }
-  return keys
+  return keys;
 }

@@ -92,10 +92,14 @@ export const displayDiscard = discardArr => {
     dispArr.push([color, numStr]);
   }
   return (
-    <div className="discard">
+    <div className="discard" style={{ width: '100%' }}>
       {dispArr.map(el => {
         let [color, numStr] = [el[0], el[1]];
-        return <div key={color}>{color + ' - ' + numStr}</div>;
+        return (
+          <div key={color} style={{ margin: '0 1%' }}>
+            {'/ ' + color + ' ' + numStr}
+          </div>
+        );
       })}
     </div>
   );
