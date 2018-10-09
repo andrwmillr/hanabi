@@ -17,6 +17,10 @@ img {
   margin-right: auto;
 }
 
+b {
+  /* color: rgb(58, 196, 250); */
+}
+
 .content-container {
   display: flex;
   flex-direction: column;
@@ -55,6 +59,29 @@ img {
   justify-content: space-between;
   align-items: center;
   padding: 2% 0;
+}
+
+.walkthrough-div {
+  width: 85%;
+  margin: 0 0 2.5% 0;
+  padding: 2.5%;
+  background-color: rgba(255, 255, 255, 0.2);
+  background-size: cover;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.walkthrough-text {
+  width: 90%;
+  margin: 0 0 2.5% 0;
+  display: inline-block;
+  line-height: 150%;
+}
+
+.walkthrough-clip {
+  width: 90%;
+  height: auto;
+  border-radius: 5px;
 }
 
 .setup-item {

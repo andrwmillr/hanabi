@@ -11,7 +11,7 @@ const Header = props => {
       <div
         style={{ width: '100px', display: 'flex', justifyContent: 'flex-end' }}
       >
-        <div>
+        <div style={{ margin: '0 2.5%' }}>
           <a
             href="https://github.com/andrwmillr/hanabi"
             rel="noopener noreferrer"
