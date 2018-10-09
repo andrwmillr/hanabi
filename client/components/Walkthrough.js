@@ -82,15 +82,16 @@ const Walkthrough = props => {
           </p>
         </div>
       </div>
-      <div id="end-walkthrough-button" style={{ margin: '0 0 2.5% 0' }}>
-        <button
-          className="button -regular"
-          type="button"
-          onClick={props.showWalkthrough}
-        >
-          I know how to play now
-        </button>
-      </div>
+
+      <button
+        id="end-walkthrough-button"
+        className="button"
+        type="button"
+        onClick={props.toggleWalkthrough}
+        style={{ margin: '0 0 2.5% 0' }}
+      >
+        Home
+      </button>
     </div>
   );
 };

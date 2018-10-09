@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Header = props => {
+const Header = () => {
   return (
     <div id="header" className="content navbar">
       {' '}

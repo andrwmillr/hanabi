@@ -62,40 +62,37 @@ export default class Game extends React.Component {
       return (
         <div id="game" className="content vert-flex">
           {!this.state.submittedName ? (
-            <div className="name-entry">
+            <div className="setup-item name-entry">
               <input
                 className="name-input"
                 type="text"
-                placeholder="enter your name"
+                placeholder="Your Name"
                 onChange={this.inputName}
               />
-              <button type="button" onClick={this.saveName}>
+              <button
+                className="name-submit"
+                type="button"
+                onClick={this.saveName}
+              >
                 Save
               </button>
             </div>
           ) : (
-            <div className="setup-item">You: {this.state.name}</div>
+            <div className="setup-item">
+              <b>You:</b> {this.state.name}
+            </div>
           )}
           <div className="setup-item">
-            Players:{' '}
-            {!this.state.players.length ? (
-              <div>No one yet...</div>
-            ) : (
-              this.state.players.map(player => player.name).join(', ')
-            )}
+            <b>Playing:</b>{' '}
+            {this.state.players.map(player => player.name).join(', ')}
           </div>
-          <div className="setup-item">
-            <button
-              className="button -regular"
-              type="button"
-              onClick={this.startGame}
-            >
-              Start Game
-            </button>
-          </div>
-          <div className="setup-item">
-            (Open multiple tabs to demo the game by yourself.)
-          </div>
+          <button
+            className="button setup-item"
+            type="button"
+            onClick={this.startGame}
+          >
+            Start Game
+          </button>
         </div>
       );
     }

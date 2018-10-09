@@ -1,45 +1,54 @@
 import React from 'react';
 import Walkthrough from './Walkthrough';
+import Game from './Game';
 
 export default class Home extends React.Component {
   constructor() {
     super();
     this.state = {
       walkthroughPage: false,
+      gamePage: false,
     };
-    this.showWalkthrough = this.showWalkthrough.bind(this);
+    this.toggleWalkthrough = this.toggleWalkthrough.bind(this);
+    this.toggleGame = this.toggleGame.bind(this);
   }
 
-  showWalkthrough() {
+  toggleWalkthrough() {
     this.setState(prevState => ({
       walkthroughPage: !prevState.walkthroughPage,
     }));
   }
 
+  toggleGame() {
+    this.setState(prevState => ({ gamePage: !prevState.gamePage }));
+  }
+
   render() {
-    if (!this.state.walkthroughPage) {
+    if (!this.state.walkthroughPage && !this.state.gamePage) {
       return (
         <div id="home" className="content horiz-flex">
           <button
-            className="button -regular"
+            className="button"
             type="button"
-            onClick={this.showWalkthrough}
+            onClick={this.toggleWalkthrough}
           >
             Learn the rules
           </button>
-          <button
-            className="button -regular"
-            type="button"
-            onClick={this.props.enterNewGameScreen}
-          >
+          <button className="button" type="button" onClick={this.toggleGame}>
             Start a game
           </button>
         </div>
       );
-    } else {
+    } else if (this.state.walkthroughPage) {
       return (
         <div id="walkthrough" className="content">
-          <Walkthrough showWalkthrough={this.showWalkthrough} />
+          <Walkthrough toggleWalkthrough={this.toggleWalkthrough} />
+        </div>
+      );
+    } else if (this.state.gamePage) {
+      return (
+        <div id="game" className="content">
+          <Game toggleGame={this.toggleGame} />
         </div>
       );
     }

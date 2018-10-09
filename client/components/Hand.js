@@ -124,12 +124,20 @@ export default class Hand extends React.Component {
             {isYourHand ? (
               <div className="options">
                 <div className="option">
-                  <button type="button" onClick={this.play}>
+                  <button
+                    className="game-button"
+                    type="button"
+                    onClick={this.play}
+                  >
                     Play
                   </button>
                 </div>
                 <div className="option">
-                  <button type="button" onClick={this.discard}>
+                  <button
+                    className="game-button"
+                    type="button"
+                    onClick={this.discard}
+                  >
                     Discard
                   </button>
                 </div>
