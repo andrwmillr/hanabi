@@ -93,6 +93,9 @@ export default class Game extends React.Component {
           >
             Start Game
           </button>
+          <div className="setup-item">
+            <small>*Open multiple tabs to play against yourself.</small>
+          </div>
         </div>
       );
     }
