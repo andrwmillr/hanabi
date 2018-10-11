@@ -26,7 +26,7 @@ export default class Home extends React.Component {
   render() {
     if (!this.state.walkthroughPage && !this.state.gamePage) {
       return (
-        <div id="home" className="content horiz-flex">
+        <div id="home" className="content horiz-flex bottom-radius">
           <button
             className="button"
             type="button"
@@ -47,7 +47,7 @@ export default class Home extends React.Component {
       );
     } else if (this.state.gamePage) {
       return (
-        <div id="game" className="content">
+        <div id="game" className="content bottom-radius">
           <Game toggleGame={this.toggleGame} />
         </div>
       );
