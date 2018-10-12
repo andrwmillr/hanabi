@@ -16,6 +16,7 @@ export default class Game extends React.Component {
     this.inputName = this.inputName.bind(this);
     this.saveName = this.saveName.bind(this);
     this.startGame = this.startGame.bind(this);
+    this.goHome = this.goHome.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +46,10 @@ export default class Game extends React.Component {
   startGame() {
     const game = setup();
     this.socket.emit('start', game);
+  }
+
+  goHome() {
+    this.props.toggleGame();
   }
 
   render() {
@@ -85,16 +90,16 @@ export default class Game extends React.Component {
           <div className="setup-item">
             <b>Playing:</b>{' '}
             {this.state.players.map(player => player.name).join(', ')}
+            <br />
+            <small>(Use multiple tabs to play alone.)</small>
           </div>
-          <button
-            className="button setup-item"
-            type="button"
-            onClick={this.startGame}
-          >
-            Start Game
-          </button>
-          <div className="setup-item">
-            <small>*Open multiple tabs to play against yourself.</small>
+          <div id="button-container" className="setup-item horiz-flex">
+            <button className="button" type="button" onClick={this.startGame}>
+              Start Game
+            </button>
+            <button className="button" type="button" onClick={this.goHome}>
+              Go Home
+            </button>
           </div>
         </div>
       );
