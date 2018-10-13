@@ -1,4 +1,4 @@
-<img src=https://raw.githubusercontent.com/andrwmillr/hanabi/master/public/hanabi-logo.jpg width="67%" height="auto"/>
+<img src=https://raw.githubusercontent.com/andrwmillr/hanabi/master/public/hanabi-logo.jpg width="45%" height="auto"/>
 
 ### Play Hanabi in your browser. 
 Hanabi is an [award-winning](https://en.wikipedia.org/wiki/Hanabi_(card_game)#Awards) cooperative card game designed by Antoine Bauza. Play at [playhanabi.online](https://www.playhanabi.online).
