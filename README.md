@@ -17,4 +17,6 @@ The game's fuse begins at three, and the game ends when it reaches zero.
 At the end of the game, the players' score is the number of cards they successfully played.
 
 ## Technology
-The app's front-end is written in React, its socket layer is written with Socket.IO, and it has a light backend written in Express. Some code (e.g. the app's Webpack and Babel configs) was borrowed from Fullstack Academy's boilerplate repository.
+Hanabi's front-end is written in React, its socket layer is written with Socket.IO, and it has a light backend written in Express. Some code (e.g. the app's Webpack and Babel configs) was borrowed from Fullstack Academy's boilerplate repository.
+
+Hanabi's display and game logic were originally coded using [boardgame.io](boardgame.io). Boardgame.io is a functionally-oriented library, and in general my code uses pure functions and immutable game state.
