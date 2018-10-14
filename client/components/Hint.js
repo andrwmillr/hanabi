@@ -1,5 +1,5 @@
 import React from 'react';
-import { hintToText } from '../setup';
+import { hintToText } from '../utils/functions';
 
 export default class Hint extends React.Component {
   constructor() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Hand from './Hand';
 import Score from './Score';
-import { moves, calcPoints, displayDiscard } from '../functions';
+import { moves, calcPoints, displayDiscard } from '../utils/functions';
 import socket from '../socket';
 
 export default class Board extends React.Component {

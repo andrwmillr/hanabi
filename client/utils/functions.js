@@ -1,4 +1,4 @@
-import { cards, draw, hintToText } from './setup';
+import { cards } from './cards';
 import shuffle from 'shuffle-array';
 import React from 'react';
 
@@ -18,6 +18,16 @@ export const setup = () => {
     deck,
     discard: [],
   };
+};
+
+export const draw = function(hand, deck, card) {
+  const idx = hand.indexOf(card);
+  hand.splice(idx, 1);
+  if (deck.length) {
+    const newCard = deck.shift();
+    hand.push(newCard);
+  }
+  return { hand, deck };
 };
 
 export const moves = {
@@ -56,17 +66,18 @@ export const moves = {
   },
 
   giveHint(player, hint, G) {
-    let information = G.information;
+    const newG = { ...G };
+    let information = newG.information;
     let newHint;
     if (information === 0) {
       newHint = 'There are no information tokens left!';
     } else {
-      newHint = G.hint;
+      newHint = newG.hint;
       const hintText = hintToText(hint[1], hint[0]);
       information--;
       newHint = `${player.name}: ${hintText}`;
     }
-    return { ...G, hint: newHint, information };
+    return { ...newG, hint: newHint, information };
   },
 };
 
@@ -103,4 +114,43 @@ export const displayDiscard = discardArr => {
       })}
     </div>
   );
+};
+
+export const hintToText = (idxArr, hintType) => {
+  hintType = hintTypeToText(hintType);
+  let copyArr = idxArr.map(idx => idx + 1);
+  if (copyArr.length === 1) {
+    return 'card ' + copyArr[0] + ' is a ' + hintType;
+  }
+  const last = copyArr.pop();
+  let returnStr = copyArr.join(', ');
+  returnStr = 'cards ' + returnStr + ' and ' + last + ' are ' + hintType + 's';
+  return returnStr;
+};
+
+const hintTypeToText = type => {
+  switch (type) {
+    case 'G':
+      return 'green';
+    case 'R':
+      return 'red';
+    case 'B':
+      return 'blue';
+    case 'Y':
+      return 'yellow';
+    case 'W':
+      return 'white';
+    case '1':
+      return 'one';
+    case '2':
+      return 'two';
+    case '3':
+      return 'three';
+    case '4':
+      return 'four';
+    case '5':
+      return 'five';
+    default:
+      return '';
+  }
 };

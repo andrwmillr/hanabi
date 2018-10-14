@@ -1,9 +1,9 @@
 import React from 'react';
 import socket from '../socket';
 import Board from './Board';
-import { setup } from '../functions';
+import { setup } from '../utils/functions';
 
-export default class Game extends React.Component {
+export default class GameScreen extends React.Component {
   constructor() {
     super();
     this.state = {
