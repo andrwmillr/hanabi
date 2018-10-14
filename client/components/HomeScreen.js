@@ -1,8 +1,8 @@
 import React from 'react';
 import Walkthrough from './Walkthrough';
-import Game from './Game';
+import GameScreen from './GameScreen';
 
-export default class Home extends React.Component {
+export default class HomeScreen extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -48,7 +48,7 @@ export default class Home extends React.Component {
     } else if (this.state.gamePage) {
       return (
         <div id="game" className="content bottom-radius">
-          <Game toggleGame={this.toggleGame} />
+          <GameScreen toggleGame={this.toggleGame} />
         </div>
       );
     }
