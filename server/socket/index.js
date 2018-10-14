@@ -4,23 +4,39 @@ module.exports = (io, rooms) => {
       `A socket connection to the server has been made: ${socket.id}`
     );
 
-    const gameRoom = socket.handshake.headers.referer;
-    socket.join(gameRoom);
+    let gameRoom = socket.handshake.headers.referer;
 
-    socket.on('get-players', () => {
-      let room = rooms[gameRoom];
-      if (!room) {
-        rooms[gameRoom] = { players: [], game: {} };
-        room = rooms[gameRoom];
-      }
-      io.to(gameRoom).emit('set-players', room);
+    socket.on('get-rooms', () => {
+      const roomNames = Object.keys(rooms);
+      socket.emit('send-rooms', roomNames);
     });
 
-    socket.on('send-name', name => {
+    socket.on('get-players', roomName => {
+      const room = rooms[roomName];
+      socket.emit('send-players', room.players);
+    });
+
+    socket.on('join-room', roomName => {
+      const room = rooms[roomName];
+      socket.join(roomName);
+      socket.emit('send-players', room.players);
+    });
+
+    socket.on('create-room', room => {
+      const newRoom = { name: room, players: [], game: {} };
+      rooms[room] = newRoom;
+      socket.join(room);
+      const roomNames = Object.keys(rooms);
+      socket.broadcast.emit('send-rooms', roomNames);
+    });
+
+    socket.on('send-name', data => {
+      gameRoom = data.room;
+      let name = data.name;
       let room = rooms[gameRoom];
       if (!room.started) {
         room.players.push({ id: socket.id, name });
-        io.to(gameRoom).emit('set-players', room);
+        io.in(gameRoom).emit('add-player', room.players);
       }
     });
 
@@ -84,9 +100,9 @@ module.exports = (io, rooms) => {
         const index = room.players.indexOf(disconnectedPlayer);
         room.players.splice(index, 1);
         room.started = false;
-        if (!room.players.length) {
-          rooms[gameRoom] = undefined;
-        }
+      }
+      if (!room || !room.players.length) {
+        delete rooms[gameRoom];
       }
     });
   });

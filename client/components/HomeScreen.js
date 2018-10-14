@@ -9,10 +9,12 @@ export default class HomeScreen extends React.Component {
       walkthroughPage: false,
       gamePage: false,
       name: '',
+      room: '',
     };
     this.toggleWalkthrough = this.toggleWalkthrough.bind(this);
     this.toggleGame = this.toggleGame.bind(this);
     this.saveName = this.saveName.bind(this);
+    this.saveRoom = this.saveRoom.bind(this);
   }
 
   toggleWalkthrough() {
@@ -27,6 +29,10 @@ export default class HomeScreen extends React.Component {
 
   saveName(name) {
     this.setState({ name });
+  }
+
+  saveRoom(room) {
+    this.setState({ room });
   }
 
   render() {
@@ -58,6 +64,8 @@ export default class HomeScreen extends React.Component {
             toggleGame={this.toggleGame}
             name={this.state.name}
             saveName={this.saveName}
+            room={this.state.room}
+            saveRoom={this.saveRoom}
           />
         </div>
       );

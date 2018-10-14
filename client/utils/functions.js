@@ -38,6 +38,9 @@ export const moves = {
     const color = card[1];
     if (newG.board[color] === value - 1) {
       newG.board[color] = value;
+      if (value === '5' && newG.information < 8) {
+        newG.information++;
+      }
       const newHandAndDeck = draw(newG.hands[player.id], newG.deck, card);
       newG.hands[player.id] = newHandAndDeck.hand;
       const deck = newHandAndDeck.deck;
