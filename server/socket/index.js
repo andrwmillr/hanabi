@@ -7,16 +7,20 @@ module.exports = (io, rooms) => {
     const gameRoom = socket.handshake.headers.referer;
     socket.join(gameRoom);
 
-    socket.on('send-name', name => {
+    socket.on('get-players', () => {
       let room = rooms[gameRoom];
       if (!room) {
-        rooms[gameRoom] = { players: [{ id: socket.id, name }], game: {} };
+        rooms[gameRoom] = { players: [], game: {} };
         room = rooms[gameRoom];
-      } else if (!room.started) {
-        room.players.push({ id: socket.id, name });
       }
+      io.to(gameRoom).emit('set-players', room);
+    });
+
+    socket.on('send-name', name => {
+      let room = rooms[gameRoom];
       if (!room.started) {
-        io.to(gameRoom).emit('add-player', room);
+        room.players.push({ id: socket.id, name });
+        io.to(gameRoom).emit('set-players', room);
       }
     });
 

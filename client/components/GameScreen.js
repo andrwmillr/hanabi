@@ -20,7 +20,11 @@ export default class GameScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.on('add-player', room => {
+    if (this.props.name) {
+      this.setState({ name: this.props.name, submittedName: true });
+    }
+
+    this.socket.on('set-players', room => {
       this.setState({ players: room.players });
     });
 
@@ -31,6 +35,13 @@ export default class GameScreen extends React.Component {
         playing: room.playing,
       });
     });
+
+    this.socket.emit('get-players');
+  }
+
+  componentWillUnmount() {
+    this.socket.off('set-players');
+    this.socket.off('start');
   }
 
   inputName(evt) {
@@ -40,6 +51,7 @@ export default class GameScreen extends React.Component {
   saveName(evt) {
     evt.preventDefault();
     this.socket.emit('send-name', this.state.name);
+    this.props.saveName(this.state.name);
     this.setState({ submittedName: true });
   }
 
