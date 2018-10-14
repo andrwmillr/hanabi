@@ -8,9 +8,11 @@ export default class HomeScreen extends React.Component {
     this.state = {
       walkthroughPage: false,
       gamePage: false,
+      name: '',
     };
     this.toggleWalkthrough = this.toggleWalkthrough.bind(this);
     this.toggleGame = this.toggleGame.bind(this);
+    this.saveName = this.saveName.bind(this);
   }
 
   toggleWalkthrough() {
@@ -21,6 +23,10 @@ export default class HomeScreen extends React.Component {
 
   toggleGame() {
     this.setState(prevState => ({ gamePage: !prevState.gamePage }));
+  }
+
+  saveName(name) {
+    this.setState({ name });
   }
 
   render() {
@@ -48,7 +54,11 @@ export default class HomeScreen extends React.Component {
     } else if (this.state.gamePage) {
       return (
         <div id="game" className="content bottom-radius">
-          <GameScreen toggleGame={this.toggleGame} />
+          <GameScreen
+            toggleGame={this.toggleGame}
+            name={this.state.name}
+            saveName={this.saveName}
+          />
         </div>
       );
     }
