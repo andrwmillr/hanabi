@@ -4,11 +4,17 @@ module.exports = (io, rooms) => {
       `A socket connection to the server has been made: ${socket.id}`
     );
 
-    let gameRoom = socket.handshake.headers.referer;
+    let gameRoom = '';
 
     socket.on('get-rooms', () => {
-      const roomNames = Object.keys(rooms);
-      socket.emit('send-rooms', roomNames);
+      let openRooms = [];
+      for (let name of Object.keys(rooms)) {
+        let room = rooms[name];
+        if (!room.started) {
+          openRooms.push(name);
+        }
+      }
+      socket.emit('send-rooms', openRooms);
     });
 
     socket.on('get-players', roomName => {
@@ -19,24 +25,24 @@ module.exports = (io, rooms) => {
     socket.on('join-room', roomName => {
       const room = rooms[roomName];
       socket.join(roomName);
+      gameRoom = roomName;
       socket.emit('send-players', room.players);
     });
 
-    socket.on('create-room', room => {
-      const newRoom = { name: room, players: [], game: {} };
-      rooms[room] = newRoom;
-      socket.join(room);
+    socket.on('create-room', roomName => {
+      const newRoom = { name: roomName, players: [], game: {} };
+      rooms[roomName] = newRoom;
+      socket.join(roomName);
+      gameRoom = roomName;
       const roomNames = Object.keys(rooms);
       socket.broadcast.emit('send-rooms', roomNames);
     });
 
-    socket.on('send-name', data => {
-      gameRoom = data.room;
-      let name = data.name;
+    socket.on('send-name', name => {
       let room = rooms[gameRoom];
-      if (!room.started) {
+      if (room && !room.started) {
         room.players.push({ id: socket.id, name });
-        io.in(gameRoom).emit('add-player', room.players);
+        io.to(gameRoom).emit('add-player', room.players);
       }
     });
 
@@ -97,9 +103,11 @@ module.exports = (io, rooms) => {
         const disconnectedPlayer = room.players.find(
           player => player.id === socket.id
         );
-        const index = room.players.indexOf(disconnectedPlayer);
-        room.players.splice(index, 1);
-        room.started = false;
+        if (disconnectedPlayer) {
+          const index = room.players.indexOf(disconnectedPlayer);
+          room.players.splice(index, 1);
+          room.started = false;
+        }
       }
       if (!room || !room.players.length) {
         delete rooms[gameRoom];

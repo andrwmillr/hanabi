@@ -1,6 +1,10 @@
 import React from 'react';
 import socket from '../socket';
+
 import Board from './Board';
+import NameEntry from './NameEntry';
+import JoinGame from './JoinGame';
+
 import { setup } from '../utils/functions';
 
 export default class GameScreen extends React.Component {
@@ -82,10 +86,7 @@ export default class GameScreen extends React.Component {
 
   saveName(evt) {
     evt.preventDefault();
-    this.socket.emit('send-name', {
-      name: this.state.name,
-      room: this.state.room,
-    });
+    this.socket.emit('send-name', this.state.name);
     this.props.saveName(this.state.name);
     this.setState({ submittedName: true });
   }
@@ -126,85 +127,82 @@ export default class GameScreen extends React.Component {
       );
     }
 
-    return (
-      <div id="game" className="vert-flex">
-        {this.state.enteredRoom ? (
-          <div className="setup-item">
-            {this.state.submittedName ? (
-              <div className="setup-item">
-                <b>You:</b> {this.state.name}
-              </div>
-            ) : (
-              <div className="setup-item name-entry">
-                <input
-                  className="name-input"
-                  type="text"
-                  placeholder="Your Name"
-                  onChange={this.inputName}
-                />
-                <button
-                  className="name-submit"
-                  type="button"
-                  onClick={this.saveName}
-                >
-                  Save
-                </button>
-              </div>
-            )}
-            <b>Room:</b> {this.state.room}
-            <br />
-            <b>Playing:</b>{' '}
-            {this.state.players.map(player => player.name).join(', ')}
-            <br />
-            <small>(Use multiple tabs to play alone.)</small>
-            <button className="button" type="button" onClick={this.startGame}>
-              Start Game
-            </button>
-          </div>
-        ) : (
-          <div className="setup-item">
-            {' '}
-            <div className="horiz-flex">
-              <div>
-                <input
-                  className="name-input"
-                  type="text"
-                  placeholder="Create a Game"
-                  onChange={this.inputRoom}
-                />
-                <button
-                  className="name-submit"
-                  type="button"
-                  onClick={this.createRoom}
-                >
-                  Create
-                </button>
-              </div>
-              <div>
-                <form
-                  onSubmit={evt => this.joinRoom(evt)}
-                  style={{ display: 'flex' }}
-                >
-                  <div className="hint-menu">
-                    <select onChange={evt => this.inputRoom(evt)}>
-                      <option>Join a Game</option>
-                      {this.state.rooms.map(room => {
-                        return <option key={room}>{room}</option>;
-                      })}
-                    </select>
-                  </div>
-                  <button className="hint-submit" type="submit">
-                    Join
-                  </button>
-                </form>
-              </div>
+    if (this.state.enteredRoom) {
+      if (this.state.submittedName) {
+        return (
+          <div id="game" className="vert-flex">
+            <div className="setup-item">
+              <b>You:</b> {this.state.name}
+            </div>
+            <div className="setup-item">
+              <b>Room:</b> {this.state.room}
+            </div>
+            <div className="setup-item">
+              <b>Players:</b>{' '}
+              {this.state.players.map(player => player.name).join(', ')}
+              <br />
+              {this.state.players.length < 2 && (
+                <small>(Use multiple tabs to play alone.)</small>
+              )}
+            </div>
+            <div id="button-container">
+              <button className="button" type="button" onClick={this.startGame}>
+                Start Game
+              </button>
+              <button className="button" type="button" onClick={this.goHome}>
+                Go Home
+              </button>
             </div>
           </div>
-        )}
-        <button className="button" type="button" onClick={this.goHome}>
-          Go Home
-        </button>
-      </div>
-    );
+        );
+      }
+      if (!this.state.submittedName) {
+        return (
+          <div id="game" className="vert-flex">
+            <div className="setup-item">
+              <NameEntry inputName={this.inputName} saveName={this.saveName} />
+            </div>
+            <div className="setup-item">
+              <b>Room:</b> {this.state.room}
+            </div>
+            <div className="setup-item">
+              <b>Players:</b>{' '}
+              {this.state.players.map(player => player.name).join(', ')}
+              <br />
+              {this.state.players.length < 2 && (
+                <small>(Use multiple tabs to play alone.)</small>
+              )}
+            </div>
+            <div id="button-container">
+              <button className="button" type="button" onClick={this.startGame}>
+                Start Game
+              </button>
+              <button className="button" type="button" onClick={this.goHome}>
+                Go Home
+              </button>
+            </div>
+          </div>
+        );
+      }
+    }
+
+    if (!this.state.enteredRoom) {
+      return (
+        <div id="game" className="vert-flex">
+          <div className="setup-item" style={{ width: '85%' }}>
+            {' '}
+            <JoinGame
+              inputRoom={this.inputRoom}
+              joinRoom={this.joinRoom}
+              createRoom={this.createRoom}
+              rooms={this.state.rooms}
+            />
+          </div>
+          <button className="button" type="button" onClick={this.goHome}>
+            Go Home
+          </button>
+        </div>
+      );
+    }
   }
 }

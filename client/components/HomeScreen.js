@@ -38,7 +38,11 @@ export default class HomeScreen extends React.Component {
   render() {
     if (!this.state.walkthroughPage && !this.state.gamePage) {
       return (
-        <div id="home" className="content horiz-flex bottom-radius">
+        <div
+          id="home"
+          className="content bottom-radius"
+          style={{ textAlign: 'center' }}
+        >
           <button
             className="button"
             type="button"
