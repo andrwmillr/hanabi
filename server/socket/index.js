@@ -4,23 +4,45 @@ module.exports = (io, rooms) => {
       `A socket connection to the server has been made: ${socket.id}`
     );
 
-    const gameRoom = socket.handshake.headers.referer;
-    socket.join(gameRoom);
+    let gameRoom = '';
 
-    socket.on('get-players', () => {
-      let room = rooms[gameRoom];
-      if (!room) {
-        rooms[gameRoom] = { players: [], game: {} };
-        room = rooms[gameRoom];
+    socket.on('get-rooms', () => {
+      let openRooms = [];
+      for (let name of Object.keys(rooms)) {
+        let room = rooms[name];
+        if (!room.started) {
+          openRooms.push(name);
+        }
       }
-      io.to(gameRoom).emit('set-players', room);
+      socket.emit('send-rooms', openRooms);
+    });
+
+    socket.on('get-players', roomName => {
+      const room = rooms[roomName];
+      socket.emit('send-players', room.players);
+    });
+
+    socket.on('join-room', roomName => {
+      const room = rooms[roomName];
+      socket.join(roomName);
+      gameRoom = roomName;
+      socket.emit('send-players', room.players);
+    });
+
+    socket.on('create-room', roomName => {
+      const newRoom = { name: roomName, players: [], game: {} };
+      rooms[roomName] = newRoom;
+      socket.join(roomName);
+      gameRoom = roomName;
+      const roomNames = Object.keys(rooms);
+      socket.broadcast.emit('send-rooms', roomNames);
     });
 
     socket.on('send-name', name => {
       let room = rooms[gameRoom];
-      if (!room.started) {
+      if (room && !room.started) {
         room.players.push({ id: socket.id, name });
-        io.to(gameRoom).emit('set-players', room);
+        io.to(gameRoom).emit('add-player', room.players);
       }
     });
 
@@ -81,12 +103,14 @@ module.exports = (io, rooms) => {
         const disconnectedPlayer = room.players.find(
           player => player.id === socket.id
         );
-        const index = room.players.indexOf(disconnectedPlayer);
-        room.players.splice(index, 1);
-        room.started = false;
-        if (!room.players.length) {
-          rooms[gameRoom] = undefined;
+        if (disconnectedPlayer) {
+          const index = room.players.indexOf(disconnectedPlayer);
+          room.players.splice(index, 1);
+          room.started = false;
         }
+      }
+      if (!room || !room.players.length) {
+        delete rooms[gameRoom];
       }
     });
   });
