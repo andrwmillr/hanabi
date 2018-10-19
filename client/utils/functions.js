@@ -3,7 +3,8 @@ import shuffle from 'shuffle-array';
 import React from 'react';
 
 export const setup = () => {
-  let deck = shuffle(cards);
+  let newCards = [...cards];
+  let deck = shuffle(newCards);
   return {
     board: {
       R: 0,
@@ -20,14 +21,32 @@ export const setup = () => {
   };
 };
 
-export const draw = function(hand, deck, card) {
-  const idx = hand.indexOf(card);
-  hand.splice(idx, 1);
-  if (deck.length) {
-    const newCard = deck.shift();
-    hand.push(newCard);
+export const deal = (game, players) => {
+  let newG = { ...game };
+  let hands = {};
+  for (let player of players) {
+    hands[player.id] = [];
+    let i = 0;
+    while (i < 5) {
+      const card = newG.deck.shift();
+      hands[player.id].push(card);
+      i++;
+    }
   }
-  return { hand, deck };
+  newG.hands = hands;
+  return newG;
+};
+
+export const draw = function(hand, deck, card) {
+  const newHand = [...hand];
+  const newDeck = [...deck];
+  const idx = newHand.indexOf(card);
+  newHand.splice(idx, 1);
+  if (newDeck.length) {
+    const newCard = newDeck.shift();
+    newHand.splice(idx, 0, newCard);
+  }
+  return { hand: newHand, deck: newDeck };
 };
 
 export const moves = {
